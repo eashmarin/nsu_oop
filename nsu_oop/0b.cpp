@@ -2,7 +2,8 @@
 #include <string>
 #include <fstream>
 #include <map>
-#include <list>
+#include <algorithm>
+#include <vector>
 
 using namespace std;
 
@@ -11,9 +12,8 @@ public:
 	Stat(const string& fileName) {
 		input.open(fileName);
 		read();
-		if (wrds_amount > 0)
-			transfer_data();
-		iterator = data.end();
+		//if (wrds_amount > 0)
+			//transfer_data();
 	}
 	void read() {
 		while (!input.eof()) {
@@ -24,17 +24,13 @@ public:
 			}
 		}
 	}
-	void transfer_data() {  
+	/*void transfer_data() {  
 		for (map<string, int> ::iterator it = buffer.begin(); it != buffer.end(); it++) 
 			data[it->second].push_back(it->first);
 		
-	}
-	pair<int, list<string>> getNextWrd() {
-		iterator--;
-		return make_pair(iterator->first, iterator->second);
-	}
-	int getSize() {
-		return data.size();
+	}*/
+	const map<string, int>& getStat() {
+		return buffer;
 	}
 	const int getWrdsAmount() {
 		return wrds_amount;
@@ -44,31 +40,43 @@ public:
 private:
 	ifstream input;
 	string tmp_string;
-	map<int, list<string>> data;
+	//map<int, list<string>> data;
 	map<string, int> buffer;
-	map<int, list<string>> ::iterator iterator;
 	int wrds_amount;
+};
+
+struct cmp {
+
+	bool operator()(const pair<string, int>& p1, const pair<string, int>& p2) {
+		return (p1.second > p2.second);
+	}
 };
 
 class CSVWriter {
 public:
 	CSVWriter(Stat &stat) {
 		this->stat = &stat;
+		transfer_data();
 	}
 	void write(string fileName) {
-		output.open(fileName);
-		int size = stat->getSize();
-		for (int i = 0; i < size; i++) {
-			pair<int, list<string>> p = stat->getNextWrd();
-			for (list<string> ::iterator list_it = p.second.begin(); list_it != p.second.end(); list_it++) 
-				output <<  *list_it << "," << p.first << "," << 
-				(double)p.first/stat->getWrdsAmount() * 100 << "\n";
+		output.open(fileName);		
+		for (vector<pair<string, int>> :: iterator it = sorted_stat.begin(); it != sorted_stat.end(); it++) {
+			output << it->first << "," << it->second << "," << 
+			(double)it->second/stat->getWrdsAmount() * 100 << "\n";
 			
 		}
 	}
+	void transfer_data() {
+		for (map<string, int> ::const_iterator it = stat->getStat().begin(); it != stat->getStat().end(); it++) {
+			sorted_stat.push_back(make_pair(it->first, it->second));
+		}
+		sort(sorted_stat.begin(), sorted_stat.end(), cmp());
+	}
+	
 private:
 	ofstream output;
 	Stat* stat;
+	vector<pair<string, int>> sorted_stat;
 };
 
 int main(int argc, char *argv[]) {
