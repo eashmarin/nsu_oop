@@ -4,6 +4,7 @@
 #include <map>
 #include <algorithm>
 #include <vector>
+#include <regex>
 
 using namespace std;
 
@@ -16,19 +17,17 @@ public:
 			//transfer_data();
 	}
 	void read() {
+		regex regular("([A-Za-z0-9]+)([^A-Za-z0-9]*)");
+		cmatch result;
 		while (!input.eof()) {
 			getline(input, tmp_string);
-			if (tmp_string != "") {
-				buffer[tmp_string]++;
+			while (regex_search(tmp_string.c_str(), result, regular)) {
+				buffer[result[1]]++;
 				wrds_amount++;
+				tmp_string = result.suffix();
 			}
 		}
 	}
-	/*void transfer_data() {  
-		for (map<string, int> ::iterator it = buffer.begin(); it != buffer.end(); it++) 
-			data[it->second].push_back(it->first);
-		
-	}*/
 	const map<string, int>& getStat() {
 		return buffer;
 	}
