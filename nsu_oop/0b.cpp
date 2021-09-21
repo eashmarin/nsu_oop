@@ -13,18 +13,16 @@ public:
 	Stat(const string& fileName) {
 		input.open(fileName);
 		read();
-		//if (wrds_amount > 0)
-			//transfer_data();
 	}
 	void read() {
 		regex regular("([A-Za-z0-9]+)([^A-Za-z0-9]*)");
-		cmatch result;
+		smatch result;
 		while (!input.eof()) {
-			getline(input, tmp_string);
-			while (regex_search(tmp_string.c_str(), result, regular)) {
+			getline(input, currLine);
+			while (regex_search(currLine, result, regular)) {
 				buffer[result[1]]++;
 				wrds_amount++;
-				tmp_string = result.suffix();
+				currLine = result.suffix();
 			}
 		}
 	}
@@ -38,14 +36,12 @@ public:
 
 private:
 	ifstream input;
-	string tmp_string;
-	//map<int, list<string>> data;
+	string currLine;
 	map<string, int> buffer;
 	int wrds_amount;
 };
 
 struct cmp {
-
 	bool operator()(const pair<string, int>& p1, const pair<string, int>& p2) {
 		return (p1.second > p2.second);
 	}
@@ -56,37 +52,39 @@ public:
 	CSVWriter(Stat &stat) {
 		this->stat = &stat;
 		transfer_data();
+		sort(data.begin(), data.end(), cmp());
 	}
 	void write(string fileName) {
-		output.open(fileName);		
-		for (vector<pair<string, int>> :: iterator it = sorted_stat.begin(); it != sorted_stat.end(); it++) {
+		output.open(fileName);	
+		vector<pair<string, int>> ::iterator it;
+		for (it = data.begin(); it != data.end(); it++) {
 			output << it->first << "," << it->second << "," << 
-			(double)it->second/stat->getWrdsAmount() * 100 << "\n";
+			(double)it->second/stat->getWrdsAmount() * 100 << "%\n";
 			
 		}
 	}
 	void transfer_data() {
-		for (map<string, int> ::const_iterator it = stat->getStat().begin(); it != stat->getStat().end(); it++) {
-			sorted_stat.push_back(make_pair(it->first, it->second));
-		}
-		sort(sorted_stat.begin(), sorted_stat.end(), cmp());
+		map<string, int> ::const_iterator it;
+		for (it = stat->getStat().begin(); it != stat->getStat().end(); it++) 
+			data.push_back(make_pair(it->first, it->second));
 	}
 	
 private:
 	ofstream output;
 	Stat* stat;
-	vector<pair<string, int>> sorted_stat;
+	vector<pair<string, int>> data;
 };
 
 int main(int argc, char *argv[]) {
-
-	//const string fileName = argv[0];
-	//getline(cin, fileName);
-
-	Stat stat("input.txt");
-	//cout << argv[1] << "\n" << argv[2];
+	string inputName = "input.txt";
+	string outputName = "output.csv";
+	if (argc > 1) {
+		inputName = argv[1];
+		outputName = argv[2];
+	}
+	Stat stat(inputName);
 	CSVWriter write(stat);
-	write.write("output.csv");
+	write.write(outputName);
 
 	return 0;
 }
