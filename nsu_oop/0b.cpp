@@ -8,11 +8,20 @@
 
 using namespace std;
 
+class cmp {
+	bool operator()(const pair<string, int>& p1, const pair<string, int>& p2) {
+		return (p1.second > p2.second);
+	}
+};
+
 class Stat {
 public:
-	Stat(const string& fileName) {
+	Stat(const string fileName) {
 		input.open(fileName);
 		read();
+		input.close();
+		transfer_data();
+		sort(data.begin(), data.end(), cmp());
 	}
 	void read() {
 		regex regular("([A-Za-z0-9]+)([^A-Za-z0-9]*)");
@@ -26,10 +35,15 @@ public:
 			}
 		}
 	}
-	const map<string, int>& getStat() {
-		return buffer;
+	void transfer_data() {
+		map<string, int> ::const_iterator it;
+		for (it = buffer.begin(); it != buffer.end(); it++)
+			data.push_back(make_pair(it->first, it->second));
 	}
-	const int getWrdsAmount() {
+	const vector<pair<string, int>>& getStat() {
+		return data;
+	}
+	const int& getWrdsAmount() {
 		return wrds_amount;
 	}
 
@@ -38,50 +52,36 @@ private:
 	ifstream input;
 	string currLine;
 	map<string, int> buffer;
+	vector<pair<string, int>> data;
 	int wrds_amount;
-};
-
-struct cmp {
-	bool operator()(const pair<string, int>& p1, const pair<string, int>& p2) {
-		return (p1.second > p2.second);
-	}
 };
 
 class CSVWriter {
 public:
 	CSVWriter(Stat &stat) {
 		this->stat = &stat;
-		transfer_data();
-		sort(data.begin(), data.end(), cmp());
 	}
 	void write(string fileName) {
-		output.open(fileName);	
-		vector<pair<string, int>> ::iterator it;
-		for (it = data.begin(); it != data.end(); it++) {
+		output.open(fileName);		
+		vector<pair<string, int>> ::const_iterator it;
+		for (it = stat->getStat().begin(); it != stat->getStat().end(); it++) {
 			output << it->first << "," << it->second << "," << 
 			(double)it->second/stat->getWrdsAmount() * 100 << "%\n";
-			
 		}
-	}
-	void transfer_data() {
-		map<string, int> ::const_iterator it;
-		for (it = stat->getStat().begin(); it != stat->getStat().end(); it++) 
-			data.push_back(make_pair(it->first, it->second));
 	}
 	
 private:
 	ofstream output;
 	Stat* stat;
-	vector<pair<string, int>> data;
 };
 
 int main(int argc, char *argv[]) {
 	string inputName = "input.txt";
 	string outputName = "output.csv";
-	if (argc > 1) {
+	/*if (argc > 1) {
 		inputName = argv[1];
 		outputName = argv[2];
-	}
+	}*/
 	Stat stat(inputName);
 	CSVWriter write(stat);
 	write.write(outputName);
