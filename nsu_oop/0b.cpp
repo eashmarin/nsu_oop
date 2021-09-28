@@ -9,6 +9,7 @@
 using namespace std;
 
 class cmp {
+public:
 	bool operator()(const pair<string, int>& p1, const pair<string, int>& p2) {
 		return (p1.second > p2.second);
 	}

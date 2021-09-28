@@ -386,3 +386,5 @@ FodyWeavers.xsd
 # JetBrains Rider
 .idea/
 *.sln.iml
+./nsu_oop/input.txt
+./nsu_oop/output.csv
