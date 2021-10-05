@@ -77,12 +77,17 @@ private:
 };
 
 int main(int argc, char *argv[]) {
-	string inputName = "input.txt";
-	string outputName = "output.csv";
-	/*if (argc > 1) {
+	string inputName;
+	string outputName;
+	if (argc == 3) {
+		cout << argv[1] << endl << argv[2] << endl;
 		inputName = argv[1];
 		outputName = argv[2];
-	}*/
+	}
+	else {
+		inputName = "input.txt";
+		outputName = "output.csv";
+	}
 	Stat stat(inputName);
 	CSVWriter write(stat);
 	write.write(outputName);
