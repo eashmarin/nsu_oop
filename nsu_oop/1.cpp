@@ -8,11 +8,11 @@
 //#define trit_size 2
 using namespace std;
 // 00 - True, 01 - False, 10 - Unknown
-// 00 - Unknown, 01 - False, 10 - True
+// 11 - Unknown, 01 - False, 10 - True
 enum Trit{
 	False = 1, 
 	True = 2, 
-	Unknown = 0
+	Unknown = 3
 };
 
 string int2Trit(uint value) {
@@ -46,11 +46,16 @@ public:
 		//size_remained += ((size / 2) % (size_remained)) / 2;
 		data.resize(size_remained);
 	}
-	const int capacity() {
+	const int capacity() const {
 		return data.size();
 	}
-	uint& getValue(uint index) {
+	uint getValue(uint index) const {
+		if (capacity() <= index)
+			return 3;
 		return data[uint_index(index)];
+	}
+	void setValue(uint value, uint index) {
+		data[uint_index(index)] = value;
 	}
 	class ProxyTrit {
 	public:
@@ -69,7 +74,7 @@ public:
 				set->resize(index);
 			}
 			uint mask = value << offset;
-			set->getValue(index) |= mask;
+			set->setValue(set->getValue(index) | mask, index);
 		}
 		friend ostream& operator<< (std::ostream &out, TritSet::ProxyTrit trit) {
 			uint mask = 3 << trit.offset;
@@ -94,8 +99,8 @@ int main() {
 	set[499] = Trit::False;
 	set[500] = Trit::True;
 	set[498] = Trit::True;
-	set[1000] = Trit::True;
-	cout << "capacity = " << set.capacity() << endl;
+	set[1000] = Trit::Unknown;
+	cout << set[1000] << set.capacity() << endl;
 	//cout << set[19] << " - " << &set[19] << endl;
 	//cout << sizeof(uint);
 	//cout << set.capacity() << endl;
