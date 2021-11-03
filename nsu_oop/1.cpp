@@ -126,7 +126,7 @@ int main(int argc, char* argv[]) {
 	set.shrink();
 	cout << "capacity after shrink = " << set.capacity() << endl;
 	if (set[55500] == Unknown)
-		cout << "TRUE!!!" << endl;
+		cout << "TRUE!" << endl;
 	cout << "set[447] = " << set[447] << endl;
 
 	return 0;
