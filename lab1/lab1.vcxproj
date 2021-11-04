@@ -123,7 +123,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\lab1\1.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Trit.cpp" />
+    <ClCompile Include="TritSet.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Trit.h" />
+    <ClInclude Include="TritSet.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
