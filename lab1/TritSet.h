@@ -9,16 +9,16 @@ private:
 	int current_size;
 	int default_size;
 	std::vector<uint> data;
+	std::string trit2str(Trit value);
+	void setValue(uint value, uint index);
+	uint getValue(uint index) const;
+	void resize(uint lastIndex);
 public:
 	TritSet();
 	TritSet(int size);
 	void DEBUG();
-	void resize(uint lastIndex);
 	const int capacity() const;
-	uint getValue(uint index) const;
-	void setValue(uint value, uint index);
 	void shrink();
-	std::string trit2str(Trit value);
 	class ProxyTrit {
 	public:
 		ProxyTrit(TritSet* set, int index) {
