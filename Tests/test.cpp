@@ -4,30 +4,103 @@
 #include "../lab1/Trit.h"
 
 //#include "..//lab1/main.cpp"
+TEST(OperatorTest, EqualTest) {
+	TritSet set(10);
+	uint capacity = set.capacity();
+	set[400] = Trit::Unknown;
 
-TEST(OperatorTest, Equality) {
+	EXPECT_EQ(set.capacity(), capacity);
 
-  TritSet set(500);
-  uint capacity = set.capacity();
-  set[0] = Trit::False;
-  set[1] = Trit::True;
-  set[2] = Trit::True;
-  set[7] = Trit::Unknown;
-  set[450] = Trit::False;
-  set[451] = Trit::False;
+	set[400] = Trit::False;
 
-  EXPECT_TRUE(set[0] == Trit::False);
-  EXPECT_TRUE(set[1] == Trit::True);
-  EXPECT_TRUE(set[2] == Trit::True);
-  EXPECT_TRUE(set[7] == Trit::Unknown);
-  EXPECT_TRUE(set[450] == Trit::False);
-  EXPECT_TRUE(set[451] == Trit::False);
+	EXPECT_LT(capacity, set.capacity());
+	EXPECT_EQ(set.capacity(), uint_index(400) + 1);
+}
+TEST(OperatorTest, EqualityTest) {
 
-  EXPECT_TRUE(set[1000] == Trit::Unknown);
-  EXPECT_EQ(set.capacity(), capacity);
+	TritSet set(500);
+	uint capacity = set.capacity();
+	set[0] = Trit::False;
+	set[1] = Trit::True;
+	set[2] = Trit::True;
+	set[7] = Trit::Unknown;
+	set[450] = Trit::False;
+	set[451] = Trit::False;
 
-  EXPECT_FALSE(set[1000] == Trit::True);
-  EXPECT_EQ(set.capacity(), capacity);
+	EXPECT_TRUE(set[0] == Trit::False);
+	EXPECT_TRUE(set[1] == Trit::True);
+	EXPECT_TRUE(set[2] == Trit::True);
+	EXPECT_TRUE(set[7] == Trit::Unknown);
+	EXPECT_TRUE(set[450] == Trit::False);
+	EXPECT_TRUE(set[451] == Trit::False);
+
+	EXPECT_TRUE(set[1000] == Trit::Unknown);
+	EXPECT_EQ(set.capacity(), capacity);
+
+	EXPECT_FALSE(set[1000] == Trit::True);
+	EXPECT_EQ(set.capacity(), capacity);
+}
+
+TEST(OperatorTest, And) {
+	TritSet setA(1000);
+	TritSet setB(2000);
+
+	setA[496] = Trit::False;
+	setB[496] = Trit::True;
+	setA[497] = Trit::True;
+	setB[497] = Trit::True;
+	setA[498] = Trit::Unknown;
+	setB[498] = Trit::True;
+	setA[499] = Trit::False;
+	setB[499] = Trit::False;
+
+	TritSet setC = (setA & setB);
+
+	EXPECT_TRUE(setC[496] == Trit::False);
+	EXPECT_TRUE(setC[497] == Trit::True);
+	EXPECT_TRUE(setC[498] == Trit::Unknown);
+	EXPECT_TRUE(setC[499] == Trit::False);
+
+	EXPECT_TRUE(setC.capacity() == setB.capacity());
+}
+
+TEST(OperatorTest, Or) {
+	TritSet setA(2000);
+	TritSet setB(1000);
+
+	setA[496] = Trit::False;
+	setB[496] = Trit::True;
+	setA[497] = Trit::True;
+	setB[497] = Trit::True;
+	setA[498] = Trit::Unknown;
+	setB[498] = Trit::True;
+	setA[499] = Trit::False;
+	setB[499] = Trit::False;
+
+	TritSet setC = (setA | setB);
+
+	EXPECT_TRUE(setC[496] == Trit::True);
+	EXPECT_TRUE(setC[497] == Trit::True);
+	EXPECT_TRUE(setC[498] == Trit::True);
+	EXPECT_TRUE(setC[499] == Trit::False);
+
+	EXPECT_TRUE(setC.capacity() == setA.capacity());
+}
+
+TEST(OperatorTest, Not) {
+	TritSet set(10);
+
+	set[0] = Trit::True;
+	set[3] = Trit::False;
+	set[9] = Trit::Unknown;
+
+	TritSet set2 = !set;
+
+	EXPECT_TRUE(set2[0] == Trit::False);
+	EXPECT_TRUE(set2[3] == Trit::True);
+	EXPECT_TRUE(set2[5] == Trit::Unknown);
+
+	EXPECT_TRUE(set2.capacity() == set.capacity());
 }
 
 TEST(FunctionTest, ShrinkTest) {
