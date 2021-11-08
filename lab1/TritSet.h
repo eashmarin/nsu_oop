@@ -3,21 +3,19 @@
 #include <iostream>
 #include <vector>
 #define uint unsigned int
-#define uint_index(index) (index * 2 / 8 / sizeof(uint))
+#define trit2uint(value) (value * 2 / 8 / sizeof(uint))
 class TritSet {
 private:
 	int current_size;																				// Убрать size-поля
 	int default_size;
 	std::vector<uint> data;
-	std::string trit2str(Trit value);
 	void setValue(uint value, uint index);
-	uint getValue(uint index) const;
+	const uint getValue(uint index) const;
 	void resize(uint lastIndex);
 public:
 	TritSet();
 	TritSet(int size);
 	TritSet(const TritSet& other);
-	void DEBUG();
 	const int capacity() const;
 	void shrink();
 	class ProxyTrit {
@@ -25,26 +23,23 @@ public:
 		ProxyTrit(TritSet* set, int index) {
 			this->set = set;
 			this->index = index;
-			if (uint_index(index) == 0)
+			if (trit2uint(index) == 0)
 				offset = index * 2;
 			else
-				offset = (index % uint_index(index)) * 2;
+				offset = (index % trit2uint(index)) * 2;
 		}
 
 		void operator=(Trit value) {
 			if (value == Unknown)
 				return;
-			if (set->capacity() <= uint_index(index)) {
+			if (set->capacity() <= trit2uint(index)) {
 				set->resize(index);
 			}
 			uint mask = value << offset;
 			set->setValue(set->getValue(index) | mask, index);
 		}
-		bool operator== (Trit value) {
+		const bool operator== (Trit value) const {
 			return value == getTrit();
-		}
-		std::ostream& operator<< (std::ostream& out) {
-			return out << set->trit2str(getTrit());
 		}
 		friend Trit operator&(ProxyTrit tritA, ProxyTrit tritB) {
 			if (tritA == Trit::False || tritB == Trit::False)
@@ -72,8 +67,8 @@ public:
 		TritSet* set;
 		uint index;
 		uint offset;
-		Trit getTrit() {
-			if (set->capacity() <= uint_index(index))
+		Trit getTrit() const {
+			if (set->capacity() <= trit2uint(index))
 				return Trit::Unknown;
 
 			uint mask = 3 << offset;

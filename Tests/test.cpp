@@ -14,7 +14,7 @@ TEST(OperatorTest, EqualTest) {
 	set[400] = Trit::False;
 
 	EXPECT_LT(capacity, set.capacity());
-	EXPECT_EQ(set.capacity(), uint_index(400) + 1);
+	EXPECT_EQ(set.capacity(), trit2uint(400) + 1);
 }
 TEST(OperatorTest, EqualityTest) {
 
@@ -117,5 +117,5 @@ TEST(FunctionTest, ShrinkTest) {
 	set.shrink();
 
 	EXPECT_LT(set.capacity(), capacity);
-	EXPECT_EQ(set.capacity(), uint_index(5000) + 1);
+	EXPECT_EQ(set.capacity(), trit2uint(5000) + 1);
 }
