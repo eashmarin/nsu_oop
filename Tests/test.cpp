@@ -1,20 +1,17 @@
 #include "pch.h"
-#include "../lab1/TritSet.h"
 #include "../lab1/TritSet.cpp"
 #include "../lab1/Trit.h"
 
-//#include "..//lab1/main.cpp"
 TEST(OperatorTest, EqualTest) {
 	TritSet set(10);
 	uint capacity = set.capacity();
-	set[400] = Trit::Unknown;
+	set[399] = Trit::Unknown;
 
 	EXPECT_EQ(set.capacity(), capacity);
 
-	set[400] = Trit::False;
+	set[399] = Trit::False;
 
-	EXPECT_LT(capacity, set.capacity());
-	EXPECT_EQ(set.capacity(), trit2uint(400) + 1);
+	EXPECT_EQ(set.capacity(), trits2size(400));
 }
 TEST(OperatorTest, EqualityTest) {
 
@@ -116,6 +113,5 @@ TEST(FunctionTest, ShrinkTest) {
 	set[5000] = Trit::False;
 	set.shrink();
 
-	EXPECT_LT(set.capacity(), capacity);
-	EXPECT_EQ(set.capacity(), trit2uint(5000) + 1);
+	EXPECT_EQ(set.capacity(), trits2size(5000 + 1));
 }

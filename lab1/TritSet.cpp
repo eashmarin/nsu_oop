@@ -1,59 +1,60 @@
 #include "TritSet.h"
 
-void TritSet::resize(uint lastIndex) {
-	uint uintSize = (round)(lastIndex * 2 / (sizeof(uint) * 8)) + 1;					// Сделать параметром не посл индекс, а размер (tritSize) 
-	data.resize(uintSize);
-	this->current_size = lastIndex;
+void TritSet::resize(uint newSize) {
+	data.resize(newSize);
+	tritSize = newSize * trits_per_uint;
 }
 
 TritSet::TritSet() {
-	current_size = 0;
-	default_size = 0;
+	tritSize = 0;
+	initSize = 0;
 }
 
-TritSet::TritSet(int size){
-	default_size = size;
-	resize(size);
+TritSet::TritSet(uint tritsAmount){
+	initSize = tritsAmount;
+	resize(trits2size(initSize));
 }
 
 TritSet::TritSet(const TritSet& other) {
-	this->resize(other.current_size);
-	for (int i = 0; i < this->capacity(); i++) {
-		this->data[i] = other.data[i];
-	}
+	resize(other.capacity());
+	uint capacity = this->capacity();
+	for (int i = 0; i < capacity; i++)
+		data[i] = other.data[i];
 }
 
-const int TritSet::capacity() const {
+const uint TritSet::capacity() const {
 	return data.size();
 }
 
 const uint TritSet::getValue(uint index) const {
-	if (capacity() <= trit2uint(index))
+	if (capacity() < trits2size(index + 1))
 		return Unknown;
-	return data[trit2uint(index)];
+	return data[index / trits_per_uint];
 }
 
 void TritSet::setValue(uint value, uint index) {
-	data[trit2uint(index)] = value;
+	data[(index / trits_per_uint)] = value;
 }
 
 void TritSet::shrink() {
-	int i = current_size - 1;
-	while (i > 0 && getValue(i) == 0)
-		i--;
-	if (i == 0)
-		resize(default_size);
+	uint counter = tritSize;
+
+	while (counter > 0 && (getValue(counter) == 0 || getValue(counter) == Trit::Unknown)) 
+		counter--;
+	
+	if (counter == 0)
+		resize(trits2size(initSize));
 	else
-		resize(i);
+		resize(trits2size(counter + 1));
 }
 
-TritSet::ProxyTrit TritSet::operator[](int index) {
-	ProxyTrit trit(this, index);
+TritSet::ProxyTrit TritSet::operator[](uint tritIndex) {
+	ProxyTrit trit(this, tritIndex);
 	return trit;
 }
 
 TritSet operator&(TritSet& setA, TritSet& setB) {
-	int expandSize = setA.capacity() < setB.capacity() ? setB.current_size : setA.current_size;
+	int expandSize = setA.capacity() < setB.capacity() ? setB.tritSize : setA.tritSize;
 	TritSet result(expandSize);
 	
 	for (int i = 0; i < expandSize; i++) 
@@ -63,7 +64,7 @@ TritSet operator&(TritSet& setA, TritSet& setB) {
 }
 
 TritSet operator|(TritSet& setA, TritSet& setB) {
-	int expandSize = setA.capacity() < setB.capacity() ? setB.current_size : setA.current_size;
+	int expandSize = setA.capacity() < setB.capacity() ? setB.tritSize : setA.tritSize;
 	TritSet result(expandSize);
 
 	for (int i = 0; i < expandSize; i++)
@@ -73,9 +74,9 @@ TritSet operator|(TritSet& setA, TritSet& setB) {
 }
 
 TritSet operator!(TritSet& set) {
-	int size = set.current_size;
-	TritSet result(size);
-	
+	TritSet result(set.tritSize);
+
+	int size = set.tritSize;
 	for (int i = 0; i < size; i++)
 		result[i] = !set[i];
 	
