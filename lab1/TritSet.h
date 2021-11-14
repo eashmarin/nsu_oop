@@ -16,7 +16,7 @@ private:
 public:
 	TritSet();
 	TritSet(uint tritsAmount);
-	TritSet(const TritSet& other);
+	TritSet(TritSet&& other) noexcept;
 	const uint capacity() const;
 	void shrink();
 	class ProxyTrit {

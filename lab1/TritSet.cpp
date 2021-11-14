@@ -1,5 +1,4 @@
 #include "TritSet.h"
-
 void TritSet::resize(uint newSize) {
 	data.resize(newSize);
 	tritSize = newSize * trits_per_uint;
@@ -15,11 +14,10 @@ TritSet::TritSet(uint tritsAmount){
 	resize(trits2size(initSize));
 }
 
-TritSet::TritSet(const TritSet& other) {
-	resize(other.capacity());
-	uint capacity = this->capacity();
-	for (int i = 0; i < capacity; i++)
-		data[i] = other.data[i];
+TritSet::TritSet(TritSet&& other) noexcept{
+	initSize = other.capacity();
+	tritSize = other.tritSize;
+	data = (move(other.data));
 }
 
 const uint TritSet::capacity() const {
