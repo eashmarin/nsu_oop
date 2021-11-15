@@ -34,6 +34,17 @@ void TritSet::setValue(uint value, uint index) {
 	data[(index / trits_per_uint)] = value;
 }
 
+size_t TritSet::cardinality(Trit value) {
+	size_t counter = 0;
+	int border = (value == Trit::Unknown) ? this->length() : tritSize;
+	for (int index = 0; index < border; index++) {
+		if (this->operator[](index) == value)
+			counter++;
+	}
+
+	return counter;
+}
+
 void TritSet::shrink() {
 	uint counter = tritSize;
 
@@ -44,6 +55,22 @@ void TritSet::shrink() {
 		resize(trits2size(initSize));
 	else
 		resize(trits2size(counter + 1));
+}
+
+void TritSet::trim(size_t lastIndex) {
+	for (int index = lastIndex; index < tritSize; index++)
+		this->operator[](index) = Trit::Unknown;
+}
+
+size_t TritSet::length() {
+	size_t counter = tritSize;
+
+	while (counter > 0 && (this->operator[](counter) == Trit::Unknown))
+		counter--;
+
+	if (counter == 0)
+		return counter;
+	return counter + 1;
 }
 
 TritSet::ProxyTrit TritSet::operator[](uint tritIndex) {

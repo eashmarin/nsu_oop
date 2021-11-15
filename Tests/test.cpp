@@ -115,3 +115,59 @@ TEST(FunctionTest, ShrinkTest) {
 
 	EXPECT_EQ(set.capacity(), trits2size(5000 + 1));
 }
+
+TEST(FunctionTest, CardinalityTest) {
+	TritSet set(100);
+	
+	EXPECT_EQ(set.cardinality(Trit::Unknown), 0);
+	EXPECT_EQ(set.cardinality(Trit::True), 0);
+	EXPECT_EQ(set.cardinality(Trit::False), 0);
+
+	set[0] = Trit::False;
+	set[1] = Trit::True;
+	set[2] = Trit::True;
+	set[3] = Trit::True;
+	set[4] = Trit::True;
+	set[5] = Trit::True;
+	set[6] = Trit::True;
+	set[7] = Trit::True;
+	set[8] = Trit::True;
+
+	EXPECT_EQ(set.cardinality(Trit::False), 1);
+	EXPECT_EQ(set.cardinality(Trit::True), 8);
+	EXPECT_EQ(set.cardinality(Trit::Unknown), 0);
+
+	set[50] = Trit::True;
+
+	EXPECT_EQ(set.cardinality(Trit::Unknown), 49 - 8);
+}
+
+TEST(FunctionTest, TrimTest) {
+	TritSet set(100);
+
+	set[49] = Trit::False;
+	set[50] = Trit::True;
+	set[51] = Trit::True;
+	set[90] = Trit::False;
+	set.trim(50);
+	EXPECT_TRUE(set[49] == Trit::False);
+	EXPECT_TRUE(set[50] == Trit::Unknown);
+	EXPECT_TRUE(set[51] == Trit::Unknown);
+	EXPECT_TRUE(set[90] == Trit::Unknown);
+}
+
+TEST(FunctionTest, LengthTest) {
+	TritSet set(100);
+
+	set[50] = Trit::True;
+
+	EXPECT_EQ(set.length(), 50 + 1);
+
+	set[55] = Trit::False;
+
+	EXPECT_EQ(set.length(), 55 + 1);
+
+	set[55] = Trit::Unknown;
+
+	EXPECT_EQ(set.length(), 50 + 1);
+}

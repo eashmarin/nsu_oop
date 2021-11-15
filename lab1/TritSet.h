@@ -19,6 +19,10 @@ public:
 	TritSet(TritSet&& other) noexcept;
 	const uint capacity() const;
 	void shrink();
+	size_t cardinality(Trit value);
+	void trim(size_t lastIndex);
+	size_t length();
+
 	class ProxyTrit {
 	public:
 		ProxyTrit(TritSet* set, uint tritIndex) {
@@ -27,7 +31,7 @@ public:
 			if (tritIndex / trits_per_uint == 0)
 				offset = tritIndex * 2;
 			else
-				offset = (tritIndex % (tritIndex / trits_per_uint)) * 2;
+				offset = (tritIndex % (trits_per_uint)) * 2;
 		}
 
 		void operator=(Trit value) {
