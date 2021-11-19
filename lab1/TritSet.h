@@ -2,9 +2,17 @@
 #include "Trit.h"
 #include <iostream>
 #include <vector>
-#define uint unsigned int
-#define trits_per_uint (8 * sizeof(uint) / 2)
-#define trits2size(tritsAmount) (((tritsAmount) * 2 + (8 * sizeof(uint) - 1)) / (8 * sizeof(uint)))
+
+typedef unsigned int uint;
+
+namespace {
+	constexpr uint trits_per_uint = 8 * sizeof(uint) / 2;
+}
+
+inline uint trits2size(uint tritsAmount) {
+	return (tritsAmount * 2 + (8 * sizeof(uint) - 1)) / (8 * sizeof(uint));
+}
+
 class TritSet {
 private:
 	uint tritSize;																				
@@ -16,7 +24,6 @@ private:
 public:
 	TritSet();
 	TritSet(uint tritsAmount);
-	TritSet(TritSet&& other) noexcept;
 	const uint capacity() const;
 	void shrink();
 	size_t cardinality(Trit value);
@@ -33,7 +40,6 @@ public:
 			else
 				offset = (tritIndex % (trits_per_uint)) * 2;
 		}
-
 		void operator=(Trit value) {
 			if (set->capacity() < trits2size(tritIndex + 1)) {
 				if (value == Trit::Unknown)
@@ -68,6 +74,17 @@ public:
 				return Trit::True;
 			return Trit::Unknown;
 		}
+		ProxyTrit& operator*(){
+			return *this;
+		}
+		ProxyTrit operator++() {			// prefix
+			tritIndex = tritIndex + 1;
+			offset = offset + 2;
+			return *this;
+		}
+		friend const bool operator!=(ProxyTrit tritA, ProxyTrit tritB) {
+			return (tritA.tritIndex != tritB.tritIndex);
+		}
 
 	private:
 		TritSet* set;
@@ -90,6 +107,8 @@ public:
 			}
 		}
 	};
+	ProxyTrit& begin();
+	ProxyTrit& end();
 	TritSet::ProxyTrit operator[](uint tritIndex);
 	friend TritSet operator&(TritSet& setA, TritSet& setB);
 	friend TritSet operator|(TritSet& setA, TritSet& setB);

@@ -14,12 +14,6 @@ TritSet::TritSet(uint tritsAmount){
 	resize(trits2size(initSize));
 }
 
-TritSet::TritSet(TritSet&& other) noexcept{
-	initSize = other.capacity();
-	tritSize = other.tritSize;
-	data = (move(other.data));
-}
-
 const uint TritSet::capacity() const {
 	return data.size();
 }
@@ -73,6 +67,14 @@ size_t TritSet::length() {
 	return counter + 1;
 }
 
+TritSet::ProxyTrit& TritSet::begin() {
+	return *ProxyTrit(this, 0);
+}
+
+TritSet::ProxyTrit& TritSet::end() {
+	return *ProxyTrit(this, tritSize - 1);
+}
+
 TritSet::ProxyTrit TritSet::operator[](uint tritIndex) {
 	ProxyTrit trit(this, tritIndex);
 	return trit;
@@ -85,7 +87,7 @@ TritSet operator&(TritSet& setA, TritSet& setB) {
 	for (int i = 0; i < expandSize; i++) 
 		result[i] = setA[i] & setB[i];
 
-	return std::move(result);
+	return result;
 }
 
 TritSet operator|(TritSet& setA, TritSet& setB) {
@@ -95,7 +97,7 @@ TritSet operator|(TritSet& setA, TritSet& setB) {
 	for (int i = 0; i < expandSize; i++)
 		result[i] = setA[i] | setB[i];
 
-	return std::move(result);
+	return result;
 }
 
 TritSet operator!(TritSet& set) {
@@ -105,5 +107,5 @@ TritSet operator!(TritSet& set) {
 	for (int i = 0; i < size; i++)
 		result[i] = !set[i];
 	
-	return std::move(result);
+	return result;
 }

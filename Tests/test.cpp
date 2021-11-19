@@ -100,6 +100,16 @@ TEST(OperatorTest, Not) {
 	EXPECT_TRUE(set2.capacity() == set.capacity());
 }
 
+TEST(OperatorTest, IteratorTest) {
+	TritSet set(100);
+
+	for (auto& trit: set)
+		trit = Trit::False;
+
+	for (auto trit: set)
+		EXPECT_EQ(trit, Trit::False);
+}
+
 TEST(FunctionTest, ShrinkTest) {
 	TritSet set(10'000);
 	uint capacity = set.capacity();
@@ -149,7 +159,9 @@ TEST(FunctionTest, TrimTest) {
 	set[50] = Trit::True;
 	set[51] = Trit::True;
 	set[90] = Trit::False;
+
 	set.trim(50);
+
 	EXPECT_TRUE(set[49] == Trit::False);
 	EXPECT_TRUE(set[50] == Trit::Unknown);
 	EXPECT_TRUE(set[51] == Trit::Unknown);
