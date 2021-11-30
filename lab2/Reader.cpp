@@ -1,13 +1,11 @@
 #include "Reader.h"
 
-Reader::Reader(string fileName)
-	: fileName(fileName) {
-	
-	readFile();
+Reader::Reader(vector<string>* content, string fileName)
+	: content(content), fileName(fileName) {
 }
 
-const vector<string>& Reader::getContent() {
-	return content;
+void Reader::execute(){
+	readFile();
 }
 
 void Reader::readFile() {
@@ -15,7 +13,7 @@ void Reader::readFile() {
 	string buffer;
 	while (!input.eof()) {
 		getline(input, buffer);
-		content.push_back(buffer + '\n');
+		content->push_back(buffer + '\n');
 	}
 	input.close();
 }

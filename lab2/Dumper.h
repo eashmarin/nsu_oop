@@ -4,10 +4,10 @@
 class Dumper: public Worker {
 private:
 	string fileName;
-	vector<string> content;
+	vector<string>* content;
 public:
-	Dumper(string fileName, vector<string>& content);
-	virtual const vector<string>& getContent();
+	Dumper(vector<string>* content, string fileName);
+	virtual void execute();
 	virtual void readFile();
 	virtual void writeFile();
 	virtual void grep();

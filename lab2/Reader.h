@@ -5,10 +5,10 @@
 class Reader: public Worker {
 protected:
 	string fileName;
-	vector<string> content;
+	vector<string>* content;
 public:
-	Reader(string fileName);
-	virtual const vector<string>& getContent();
+	Reader(vector<string>* content, string fileName);
+	virtual void execute();
 	virtual void readFile();
 	virtual void writeFile();
 	virtual void grep();

@@ -1,12 +1,10 @@
 #include "Writer.h"
 
-Writer::Writer(string fileName, vector<string>& content)
-    : fileName(fileName), content(content) {
-    writeFile();
-}
+Writer::Writer(vector<string>* content, string fileName)
+    : content(content), fileName(fileName) {}
 
-const vector<string>& Writer::getContent(){
-    return content;
+void Writer::execute(){
+    writeFile();
 }
 
 void Writer::readFile()
@@ -15,7 +13,7 @@ void Writer::readFile()
 
 void Writer::writeFile() {
     ofstream output(fileName);
-    for (auto& it : content)
+    for (auto& it : *content)
         output << it;
     output.close();
 }

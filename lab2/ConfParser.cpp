@@ -35,7 +35,7 @@ void ConfParser::parse() {
 		input >> buffer;
 		if (buffer != "->") {
 			Worker* w = createWorker(cmds[string2int(buffer)]);
-			content = w->getContent();
+			w->execute();
 		}
 	}
 }
@@ -47,16 +47,16 @@ Worker* ConfParser::createWorker(string cmd) {
 	regex_search(cmd, result, reg);
 
 	if (result[1] == "readfile")
-		return new Reader(result[3]);
+		return new Reader(&content, result[3]);
 	if (result[1] == "sort")
-		return new Sorter(content);
+		return new Sorter(&content);
 	if (result[1] == "replace")
-		return new Replacer(content, result[3], result[5]);
+		return new Replacer(&content, result[3], result[5]);
 	if (result[1] == "grep")
-		return new Griper(content, result[3]);
+		return new Griper(&content, result[3]);
 	if (result[1] == "dump")
-		return new Dumper(result[3], content);
+		return new Dumper(&content, result[3]);
 	if (result[1] == "writefile")
-		return new Writer(result[3], content);
+		return new Writer(&content, result[3]);
 }
 

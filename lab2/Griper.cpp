@@ -1,14 +1,11 @@
 #include "Griper.h"
 
-Griper::Griper(vector<string>& content, string word)
-	: content(content), word(word) {
-	grep();
-}
+Griper::Griper(vector<string>* content, string word)
+	: content(content), word(word) {}
 
-const vector<string>& Griper::getContent()
-{
-	return new_content;
-	// TODO: insert return statement here
+void Griper::execute(){
+	grep();
+	*content = new_content;
 }
 
 void Griper::readFile()
@@ -20,7 +17,7 @@ void Griper::writeFile()
 }
 
 void Griper::grep() {
-	for (auto& it : content) {
+	for (auto& it : *content) {
 		regex reg("([A-Za-z0-9_-]+)([!:;*.?\n]*)( *)");
 		smatch result;
 		string buffer = it;

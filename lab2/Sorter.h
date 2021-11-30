@@ -5,12 +5,12 @@
 #include <vector>
 class Sorter: public Worker {
 private:
-	vector<string> content;
-	vector<string> sortedContent;
+	vector<string>* content;
+	vector<string>* sortedContent;
 public:
-	Sorter(vector<string>& content);
+	Sorter(vector<string>* content);
 	void arrange_content();
-	virtual const vector<string>& getContent();
+	virtual void execute();
 	virtual void readFile();
 	virtual void writeFile();
 	virtual void grep();

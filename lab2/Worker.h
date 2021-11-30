@@ -5,7 +5,7 @@
 using namespace std;
 class Worker {
 public:
-	virtual const vector<string>& getContent() = 0;
+	virtual void execute() = 0;
 	virtual void readFile() = 0;
 	virtual void writeFile() = 0;
 	virtual void grep() = 0;

@@ -4,10 +4,10 @@
 class Writer: public Worker {
 private:
 	string fileName;
-	vector<string>& content;
+	vector<string>* content;
 public:
-	Writer(string fileName, vector<string>& content);
-	virtual const vector<string>& getContent();
+	Writer(vector<string>* content, string fileName);
+	virtual void execute();
 	virtual void readFile();
 	virtual void writeFile();
 	virtual void grep();

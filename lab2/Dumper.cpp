@@ -1,13 +1,10 @@
 #include "Dumper.h"
 
-Dumper::Dumper(string fileName, vector<string>& content)
-	: fileName(fileName), content(content)
-{
-	dump();
-}
+Dumper::Dumper(vector<string>* content, string fileName)
+	: content(content), fileName(fileName) {}
 
-const vector<string>& Dumper::getContent() {
-	return content;
+void Dumper::execute(){
+	dump();
 }
 
 void Dumper::readFile()
@@ -32,7 +29,7 @@ void Dumper::replace()
 
 void Dumper::dump(){
 	ofstream output;
-	for (auto& it : content)
+	for (auto& it : *content)
 		output << it;
 	output.close();
 }

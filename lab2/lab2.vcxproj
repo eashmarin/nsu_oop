@@ -141,7 +141,6 @@
   <ItemGroup>
     <ClInclude Include="ConfParser.h" />
     <ClInclude Include="Dumper.h" />
-    <ClInclude Include="FileWriter.h" />
     <ClInclude Include="Griper.h" />
     <ClInclude Include="Reader.h" />
     <ClInclude Include="Replacer.h" />
@@ -152,7 +151,6 @@
   <ItemGroup>
     <ClCompile Include="ConfParser.cpp" />
     <ClCompile Include="Dumper.cpp" />
-    <ClCompile Include="FileWriter.cpp" />
     <ClCompile Include="Griper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Reader.cpp" />

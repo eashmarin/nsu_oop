@@ -1,13 +1,11 @@
 #include "Sorter.h"
 
-Sorter::Sorter(vector<string>& content)
+Sorter::Sorter(vector<string>* content)
 	: content(content) {
-	//arrange_content();
-	sort();
 }
 
-void Sorter::arrange_content() {
-	for (auto& it : content) {
+/*void Sorter::arrange_content() {
+	for (auto& it : *content) {
 		regex reg("([^ ]+)( *)");
 		smatch result;
 		string buffer = it;
@@ -17,11 +15,11 @@ void Sorter::arrange_content() {
 		}
 		//sortedContent.at(sortedContent.size() - 1) += "\n";
 	}
-}
+}*/
 
-const vector<string>& Sorter::getContent() {
-	return content;
-	// TODO: insert return statement here
+void Sorter::execute(){
+	sort();
+
 }
 
 void Sorter::readFile()
@@ -37,7 +35,7 @@ void Sorter::grep()
 }
 
 void Sorter::sort(){
-	std::sort(content.begin(), content.end());
+	std::sort(content->begin(), content->end());
 }
 
 void Sorter::replace()

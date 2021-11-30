@@ -1,14 +1,10 @@
 #include "Replacer.h"
 
-Replacer::Replacer(vector<string>& content, string word1, string word2)
-	: content(content), word1(word1), word2(word2) {
-	arrange_content();
-	replace();
-	arrange_content_back();
-}
+Replacer::Replacer(vector<string>* content, string word1, string word2)
+	: content(content), word1(word1), word2(word2) {}
 
 void Replacer::arrange_content() {
-	for (auto& it : content) {
+	for (auto& it : *content) {
 		regex reg("([A-Za-z0-9_-]+)([.,;:!]*)( *)([\n]*)");
 		smatch result;
 		string buffer = it;
@@ -31,7 +27,7 @@ void Replacer::arrange_content() {
 
 void Replacer::arrange_content_back(){
 	auto it = arranged_content.begin();
-	for (auto& jt : content) {
+	for (auto& jt : *content) {
 		jt = "";
 		for (; *it != "\n"; it++) {
 			jt += *it;
@@ -41,9 +37,12 @@ void Replacer::arrange_content_back(){
 	}
 }
 
-const vector<string>& Replacer::getContent() {
-	return content;
+void Replacer::execute(){
+	arrange_content();
+	replace();
+	arrange_content_back();
 }
+
 
 void Replacer::readFile()
 {
