@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ConfExecutor.h" />
     <ClInclude Include="ConfParser.h" />
     <ClInclude Include="Dumper.h" />
     <ClInclude Include="Griper.h" />
@@ -149,6 +150,7 @@
     <ClInclude Include="Writer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ConfExecutor.cpp" />
     <ClCompile Include="ConfParser.cpp" />
     <ClCompile Include="Dumper.cpp" />
     <ClCompile Include="Griper.cpp" />

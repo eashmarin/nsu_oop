@@ -5,17 +5,16 @@
 #include <vector>
 class Sorter: public Worker {
 private:
-	vector<string>* content;
-	vector<string>* sortedContent;
+	vector<string>* data;
 public:
-	Sorter(vector<string>* content);
-	void arrange_content();
+	Sorter(vector<string>* data);
 	virtual void execute();
 	virtual void readFile();
-	virtual void writeFile();
+	virtual void writeFile() const;
 	virtual void grep();
 	virtual void sort();
 	virtual void replace();
-	virtual void dump();
+	virtual void dump() const;
+	virtual pair<bool, bool> haveIO() const;
 };
 

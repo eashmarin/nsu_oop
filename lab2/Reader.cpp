@@ -1,7 +1,7 @@
 #include "Reader.h"
 
-Reader::Reader(vector<string>* content, string fileName)
-	: content(content), fileName(fileName) {
+Reader::Reader(vector<string>* data, const string fileName)
+	: data(data), fileName(fileName) {
 }
 
 void Reader::execute(){
@@ -10,15 +10,17 @@ void Reader::execute(){
 
 void Reader::readFile() {
 	ifstream input(fileName);
+	if (!input)
+		throw ios_base::failure("failed to open file " + fileName);
+
 	string buffer;
 	while (!input.eof()) {
 		getline(input, buffer);
-		content->push_back(buffer + '\n');
+		data->push_back(buffer + '\n');
 	}
-	input.close();
 }
 
-void Reader::writeFile() {}
+void Reader::writeFile() const {}
 
 void Reader::grep() {}
 
@@ -26,4 +28,8 @@ void Reader::sort() {}
 
 void Reader::replace() {}
 
-void Reader::dump() {}
+void Reader::dump() const {}
+
+pair<bool, bool> Reader::haveIO() const{
+	return make_pair(false, true);
+}

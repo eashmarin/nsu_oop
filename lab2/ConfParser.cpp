@@ -1,62 +1,65 @@
 #include "ConfParser.h"
 
-ConfParser::ConfParser(string fileName)
+ConfParser::ConfParser(const string fileName)
 	: fileName(fileName) {}
 
-unsigned int ConfParser::string2int(string id) {
-	unsigned int result = 0;
-	for (int index = id.length() - 1; index >= 0; index--) {
-		result += (id[index] - '0') * pow(10, id.length() - index - 1);
-	}
-	return result;
+void ConfParser::parse() {		
+	input.open(fileName);
+	if (!input)
+		throw ios_base::failure("failed to open file" + fileName);
+
+	ParseBlocksInit();
+	ParseExOrder();
+
+	input.close();
 }
 
-void ConfParser::parse() {
-	ifstream input(fileName);
+void ConfParser::ParseBlocksInit() {
+	string currLine = "";
+	getline(input, currLine);
+	if (currLine != "desc")
+		throw logic_error("can't find \"desc\" in the beginning of " + fileName);
 
-	string id = "";
-	string cmd = "";
-	string buffer = "";
-	getline(input, buffer);
-	getline(input, buffer);
-	while (buffer != "csed") {
-
+	getline(input, currLine);
+	while (currLine != "csed" && !input.eof()) {
 		regex reg("([0-9]+)( * = *)([A-Za-z0-9]+ *[A-Za-z0-9_.]* *[A-Za-z0-9_.]* *)");
-		smatch result;
-		regex_search(buffer, result, reg);
+		smatch reg_result;
+		regex_search(currLine, reg_result, reg);
 
-		id = result[1];
-		cmd = (string)result[3];
-		cmds[string2int(id)] = cmd;
+		if (reg_result.size() == 0)
+			throw invalid_argument("invalid workflow syntax");
 
-		getline(input, buffer);
+		int id = stoi(reg_result[1]);
+		string cmd = reg_result[3];
+
+		if (cmds.count(id) > 0)
+			throw logic_error("id \"" + (string)reg_result[1] + "\" is defined multiple times in " + fileName);
+
+		cmds[id] = cmd;
+
+		getline(input, currLine);
 	}
+	if (currLine != "csed")
+		throw logic_error("can't find \"csed\" in the end of scheme description in " + fileName);
+}
+
+void ConfParser::ParseExOrder(){
 	while (!input.eof()) {
+		string buffer;
 		input >> buffer;
+
 		if (buffer != "->") {
-			Worker* w = createWorker(cmds[string2int(buffer)]);
-			w->execute();
+			if (cmds.count(stoi(buffer)) == 0)
+				throw invalid_argument("invalid workflow syntax"); 
+			ex_order.push(stoi(buffer));
 		}
 	}
 }
 
-Worker* ConfParser::createWorker(string cmd) {
-
-	regex reg("([A-Za-z0-9]+)( *)([A-Za-z0-9_.]*)( *)([A-Za-z0-9_.]*)( *)");
-	smatch result;
-	regex_search(cmd, result, reg);
-
-	if (result[1] == "readfile")
-		return new Reader(&content, result[3]);
-	if (result[1] == "sort")
-		return new Sorter(&content);
-	if (result[1] == "replace")
-		return new Replacer(&content, result[3], result[5]);
-	if (result[1] == "grep")
-		return new Griper(&content, result[3]);
-	if (result[1] == "dump")
-		return new Dumper(&content, result[3]);
-	if (result[1] == "writefile")
-		return new Writer(&content, result[3]);
+map<unsigned int, string>& ConfParser::getCmds(){
+	return cmds;
 }
 
+queue<unsigned int>& ConfParser::getOrder(){
+	return ex_order;
+}

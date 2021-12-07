@@ -3,18 +3,18 @@
 #include <regex>
 class Griper: public Worker {
 private:
-	vector<string>* content;
-	vector<string> new_content;
-	string word;
-	//vector<string> cntntByLines
+	vector<string>* data;
+	vector<string> new_data;
+	const string word;
 public:
-	Griper(vector<string>* content, string word);
+	Griper(vector<string>* data, const string word = "");
 	virtual void execute();
 	virtual void readFile();
-	virtual void writeFile();
+	virtual void writeFile() const;
 	virtual void grep();
 	virtual void sort();
 	virtual void replace();
-	virtual void dump();
+	virtual void dump() const;
+	virtual pair<bool, bool> haveIO() const;
 };
 

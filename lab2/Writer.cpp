@@ -1,7 +1,7 @@
 #include "Writer.h"
 
-Writer::Writer(vector<string>* content, string fileName)
-    : content(content), fileName(fileName) {}
+Writer::Writer(vector<string>* data, string fileName)
+    : data(data), fileName(fileName) {}
 
 void Writer::execute(){
     writeFile();
@@ -11,11 +11,13 @@ void Writer::readFile()
 {
 }
 
-void Writer::writeFile() {
+void Writer::writeFile() const {
     ofstream output(fileName);
-    for (auto& it : *content)
+    if (!output)
+        throw ios_base::failure("failed to open file " + fileName);
+
+    for (auto& it : *data)
         output << it;
-    output.close();
 }
 
 void Writer::grep()
@@ -30,6 +32,9 @@ void Writer::replace()
 {
 }
 
-void Writer::dump()
-{
+void Writer::dump() const {
+}
+
+pair<bool, bool> Writer::haveIO() const{
+    return make_pair(true, false);
 }

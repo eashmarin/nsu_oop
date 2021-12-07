@@ -1,31 +1,26 @@
 #include "Griper.h"
 
-Griper::Griper(vector<string>* content, string word)
-	: content(content), word(word) {}
+Griper::Griper(vector<string>* data, const string word)
+	: data(data), word(word) {}
 
 void Griper::execute(){
 	grep();
-	*content = new_content;
+	*data = new_data;
 }
 
 void Griper::readFile()
 {
 }
 
-void Griper::writeFile()
-{
+void Griper::writeFile() const{
 }
 
 void Griper::grep() {
-	for (auto& it : *content) {
-		regex reg("([A-Za-z0-9_-]+)([!:;*.?\n]*)( *)");
-		smatch result;
+	for (auto& it : *data) {
+		int pos = it.find(word);
 		string buffer = it;
-		while (regex_search(buffer, result, reg)) {
-			if (result[1] == word)
-				new_content.push_back(it);
-			buffer = result.suffix();
-		}
+		if(pos >= 0) 
+			new_data.push_back(it);
 	}
 }
 
@@ -37,6 +32,9 @@ void Griper::replace()
 {
 }
 
-void Griper::dump()
-{
+void Griper::dump() const{
+}
+
+pair<bool, bool> Griper::haveIO() const{
+	return make_pair(true, true);
 }

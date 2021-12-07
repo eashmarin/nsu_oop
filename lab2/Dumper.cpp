@@ -1,7 +1,7 @@
 #include "Dumper.h"
 
-Dumper::Dumper(vector<string>* content, string fileName)
-	: content(content), fileName(fileName) {}
+Dumper::Dumper(vector<string>* data, const string fileName)
+	: data(data), fileName(fileName) {}
 
 void Dumper::execute(){
 	dump();
@@ -11,8 +11,7 @@ void Dumper::readFile()
 {
 }
 
-void Dumper::writeFile()
-{
+void Dumper::writeFile() const {
 }
 
 void Dumper::grep()
@@ -27,9 +26,15 @@ void Dumper::replace()
 {
 }
 
-void Dumper::dump(){
-	ofstream output;
-	for (auto& it : *content)
+void Dumper::dump() const {
+	ofstream output(fileName);
+	if (!output)
+		throw ios_base::failure("failed to open file " + fileName);
+
+	for (auto& it : *data)
 		output << it;
-	output.close();
+}
+
+pair<bool, bool> Dumper::haveIO() const{
+	return make_pair(true, true);
 }
