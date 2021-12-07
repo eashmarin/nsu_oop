@@ -29,7 +29,7 @@ void Dumper::replace()
 void Dumper::dump() const {
 	ofstream output(fileName);
 	if (!output)
-		throw ios_base::failure("failed to open file " + fileName);
+		throw FileException(fileName);
 
 	for (auto& it : *data)
 		output << it;

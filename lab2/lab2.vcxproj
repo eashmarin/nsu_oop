@@ -142,6 +142,7 @@
     <ClInclude Include="ConfExecutor.h" />
     <ClInclude Include="ConfParser.h" />
     <ClInclude Include="Dumper.h" />
+    <ClInclude Include="FileException.h" />
     <ClInclude Include="Griper.h" />
     <ClInclude Include="Reader.h" />
     <ClInclude Include="Replacer.h" />
@@ -153,6 +154,7 @@
     <ClCompile Include="ConfExecutor.cpp" />
     <ClCompile Include="ConfParser.cpp" />
     <ClCompile Include="Dumper.cpp" />
+    <ClCompile Include="FileException.cpp" />
     <ClCompile Include="Griper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Reader.cpp" />

@@ -4,6 +4,7 @@
 #include <regex>
 #include <map>
 #include <queue>
+#include "FileException.h"
 
 using namespace std;
 

@@ -6,7 +6,7 @@ ConfParser::ConfParser(const string fileName)
 void ConfParser::parse() {		
 	input.open(fileName);
 	if (!input)
-		throw ios_base::failure("failed to open file" + fileName);
+		throw FileException(fileName);
 
 	ParseBlocksInit();
 	ParseExOrder();
@@ -25,6 +25,8 @@ void ConfParser::ParseBlocksInit() {
 		regex reg("([0-9]+)( * = *)([A-Za-z0-9]+ *[A-Za-z0-9_.]* *[A-Za-z0-9_.]* *)");
 		smatch reg_result;
 		regex_search(currLine, reg_result, reg);
+		
+
 
 		if (reg_result.size() == 0)
 			throw invalid_argument("invalid workflow syntax");

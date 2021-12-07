@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "FileException.h"
 using namespace std;
 class Worker {
 public:

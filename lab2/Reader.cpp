@@ -11,7 +11,7 @@ void Reader::execute(){
 void Reader::readFile() {
 	ifstream input(fileName);
 	if (!input)
-		throw ios_base::failure("failed to open file " + fileName);
+		throw FileException(fileName);
 
 	string buffer;
 	while (!input.eof()) {

@@ -1,9 +1,7 @@
 #include "ConfExecutor.h"
 
 ConfExecutor::ConfExecutor(const string fileName)
-	: fileName(fileName) {
-
-}
+	: fileName(fileName) {}
 
 void ConfExecutor::execute(){
 	try {
