@@ -25,20 +25,17 @@ void ConfParser::ParseBlocksInit() {
 		regex reg("([0-9]+)( * = *)([A-Za-z0-9]+ *[A-Za-z0-9_.]* *[A-Za-z0-9_.]* *)");
 		smatch reg_result;
 		regex_search(currLine, reg_result, reg);
-		
-
-
-		if (reg_result.size() == 0)
-			throw invalid_argument("invalid workflow syntax");
 
 		int id = stoi(reg_result[1]);
 		string cmd = reg_result[3];
+		
+		if (reg_result.size() == 0)
+			throw invalid_argument("invalid workflow syntax");
 
 		if (cmds.count(id) > 0)
 			throw logic_error("id \"" + (string)reg_result[1] + "\" is defined multiple times in " + fileName);
 
 		cmds[id] = cmd;
-
 		getline(input, currLine);
 	}
 	if (currLine != "csed")

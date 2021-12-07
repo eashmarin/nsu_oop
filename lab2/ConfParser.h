@@ -9,7 +9,7 @@
 using namespace std;
 
 class ConfParser {
-protected:
+private:
 	const string fileName;
 	ifstream input;
 	map<unsigned int, string> cmds;

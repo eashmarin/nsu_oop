@@ -7,9 +7,12 @@ void ConfExecutor::execute(){
 	try {
 		ConfParser parser(fileName);
 		parser.parse();
+
 		cmds = parser.getCmds();
 		ex_order = parser.getOrder();
+
 		bool haveOutput = false;
+
 		while (!ex_order.empty()) {
 			unsigned int currId = ex_order.front();
 			ex_order.pop();
