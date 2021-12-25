@@ -388,3 +388,8 @@ FodyWeavers.xsd
 *.sln.iml
 ./nsu_oop/input.txt
 ./nsu_oop/output.csv
+/lab2/in_file.txt
+/lab2/out_file.txt
+/lab2/workflow.txt
+/lab2/sorted.txt
+/lab2/replaced.txt
