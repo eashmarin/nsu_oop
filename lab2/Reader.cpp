@@ -5,10 +5,6 @@ Reader::Reader(vector<string>* data, const string fileName)
 }
 
 void Reader::execute(){
-	readFile();
-}
-
-void Reader::readFile() {
 	ifstream input(fileName);
 	if (!input)
 		throw FileException(fileName);
@@ -19,16 +15,6 @@ void Reader::readFile() {
 		data->push_back(buffer + '\n');
 	}
 }
-
-void Reader::writeFile() const {}
-
-void Reader::grep() {}
-
-void Reader::sort() {}
-
-void Reader::replace() {}
-
-void Reader::dump() const {}
 
 pair<bool, bool> Reader::haveIO() const{
 	return make_pair(false, true);

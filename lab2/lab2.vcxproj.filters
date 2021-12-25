@@ -27,7 +27,7 @@
     <ClInclude Include="Sorter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Griper.h">
+    <ClInclude Include="Grepper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Replacer.h">
@@ -62,7 +62,7 @@
     <ClCompile Include="Sorter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Griper.cpp">
+    <ClCompile Include="Grepper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Replacer.cpp">

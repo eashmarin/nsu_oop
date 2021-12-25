@@ -6,7 +6,7 @@
 #include "Writer.h"
 #include "Sorter.h"
 #include "Replacer.h"
-#include "Griper.h"
+#include "Grepper.h"
 #include "Dumper.h"
 class ConfExecutor{
 private:
@@ -14,7 +14,7 @@ private:
 	map<unsigned int, string> cmds;
 	queue<unsigned int> ex_order;
 	vector<string> data;
-	Worker* createWorker(const string cmd);
+	unique_ptr<Worker> createWorker(const string cmd);
 public:
 	ConfExecutor(const string fileName = "");
 	void execute();

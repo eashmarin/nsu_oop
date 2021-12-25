@@ -9,12 +9,6 @@ protected:
 public:
 	Reader(vector<string>* data, const string fileName = "");
 	virtual void execute();
-	virtual void readFile();
-	virtual void writeFile() const;
-	virtual void grep();
-	virtual void sort();
-	virtual void replace() ;
-	virtual void dump() const;
 	virtual pair<bool, bool> haveIO() const;
 };
 

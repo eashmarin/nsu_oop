@@ -143,7 +143,7 @@
     <ClInclude Include="ConfParser.h" />
     <ClInclude Include="Dumper.h" />
     <ClInclude Include="FileException.h" />
-    <ClInclude Include="Griper.h" />
+    <ClInclude Include="Grepper.h" />
     <ClInclude Include="Reader.h" />
     <ClInclude Include="Replacer.h" />
     <ClInclude Include="Sorter.h" />
@@ -155,7 +155,7 @@
     <ClCompile Include="ConfParser.cpp" />
     <ClCompile Include="Dumper.cpp" />
     <ClCompile Include="FileException.cpp" />
-    <ClCompile Include="Griper.cpp" />
+    <ClCompile Include="Grepper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Reader.cpp" />
     <ClCompile Include="Replacer.cpp" />

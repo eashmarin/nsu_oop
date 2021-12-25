@@ -17,7 +17,7 @@ void ConfExecutor::execute(){
 			unsigned int currId = ex_order.front();
 			ex_order.pop();
 
-			Worker* w = createWorker(cmds[currId]);
+			unique_ptr<Worker> w = createWorker(cmds[currId]);
 
 			if (haveOutput != w->haveIO().first)
 				throw logic_error("execution order is invalid");
@@ -25,7 +25,6 @@ void ConfExecutor::execute(){
 			haveOutput = w->haveIO().second;
 
 			w->execute();
-			delete w;
 		}
 		if (haveOutput)
 			throw logic_error("execution order is invalid!");
@@ -35,7 +34,7 @@ void ConfExecutor::execute(){
 	}
 }
 
-Worker* ConfExecutor::createWorker(const string cmd) {
+unique_ptr<Worker> ConfExecutor::createWorker(const string cmd) {
 	regex reg("([A-Za-z0-9]+)( *)([A-Za-z0-9_.]*)( *)([A-Za-z0-9_.]*)( *)");
 	smatch reg_result;
 	regex_search(cmd, reg_result, reg);
@@ -45,17 +44,17 @@ Worker* ConfExecutor::createWorker(const string cmd) {
 	string arg2 = reg_result[5];
 
 	if (func == "readfile")
-		return new Reader(&data, arg1);
+		return make_unique<Reader>(&data, arg1);
 	if (func == "sort")
-		return new Sorter(&data);
+		return make_unique<Sorter>(&data);
 	if (func == "replace")
-		return new Replacer(&data, arg1, arg2);
+		return make_unique<Replacer>(&data, arg1, arg2);
 	if (func == "grep")
-		return new Griper(&data, arg1);
+		return make_unique<Grepper>(&data, arg1);
 	if (func == "dump")
-		return new Dumper(&data, arg1);
+		return make_unique<Dumper>(&data, arg1);
 	if (func == "writefile")
-		return new Writer(&data, arg1);
+		return make_unique<Writer>(&data, arg1);
 
 	throw logic_error("Program can't execute command \"" + func +"\" in " + fileName);
 }

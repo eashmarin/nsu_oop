@@ -4,29 +4,6 @@ Dumper::Dumper(vector<string>* data, const string fileName)
 	: data(data), fileName(fileName) {}
 
 void Dumper::execute(){
-	dump();
-}
-
-void Dumper::readFile()
-{
-}
-
-void Dumper::writeFile() const {
-}
-
-void Dumper::grep()
-{
-}
-
-void Dumper::sort()
-{
-}
-
-void Dumper::replace()
-{
-}
-
-void Dumper::dump() const {
 	ofstream output(fileName);
 	if (!output)
 		throw FileException(fileName);

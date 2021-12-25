@@ -1,13 +1,13 @@
 #pragma once
 #include "Worker.h"
 #include <regex>
-#include <algorithm>
-#include <vector>
-class Sorter: public Worker {
+class Grepper: public Worker {
 private:
 	vector<string>* data;
+	vector<string> new_data;
+	const string word;
 public:
-	Sorter(vector<string>* data);
+	Grepper(vector<string>* data, const string word = "");
 	virtual void execute();
 	virtual pair<bool, bool> haveIO() const;
 };
